@@ -66,16 +66,10 @@ jobs:
           name: Aseprite-Windows-x64-${{ steps.get_version.outputs.version }}
           path: Aseprite-Windows-x64-${{ steps.get_version.outputs.version }}.zip
 
-      - name: Upload version.txt
-        uses: actions/upload-artifact@v4
+      - name: GH Release
+        uses: softprops/action-gh-release@v2.0.4
         with:
-          name: version-file
-          path: version.txt
-
-      - name: Commit version file
-        run: |
-          git config --local user.name "GitHub Actions"
-          git config --local user.email "actions@github.com"
-          git add version.txt
-          git commit -m "Update version.txt to ${{ steps.get_version.outputs.version }}"
-          git push origin main
+          name: Aseprite-Windows-x64-${{ steps.get_version.outputs.version }}
+          tag_name: ${{ steps.get_version.outputs.version }}
+          files: |
+            Aseprite-Windows-x64-${{ steps.get_version.outputs.version }}.zip
