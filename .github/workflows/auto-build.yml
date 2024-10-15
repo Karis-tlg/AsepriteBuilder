@@ -3,7 +3,7 @@ name: Auto build Aseprite
 on:
   schedule:
     - cron: "0 0 * * *"  
-  workflow_dispatch: 
+  workflow_dispatch:  
   push:
     branches: ["main"]
 
@@ -60,13 +60,17 @@ jobs:
           cd build/bin
           7z a ../../Aseprite-Windows-x64-${{ steps.get_version.outputs.version }}.zip *
 
-      - name: GH Release
-        uses: softprops/action-gh-release@v2.0.4
+      - name: Upload Aseprite artifact
+        uses: actions/upload-artifact@v4
         with:
           name: Aseprite-Windows-x64-${{ steps.get_version.outputs.version }}
-          tag_name: ${{ steps.get_version.outputs.version }}
-          files: |
-            Aseprite-Windows-x64-${{ steps.get_version.outputs.version }}.zip
+          path: Aseprite-Windows-x64-${{ steps.get_version.outputs.version }}.zip
+
+      - name: Upload version.txt
+        uses: actions/upload-artifact@v4
+        with:
+          name: version-file
+          path: version.txt
 
       - name: Commit version file
         run: |
